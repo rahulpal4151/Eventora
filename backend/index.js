@@ -9,9 +9,17 @@ import authRoutes from './routes/authRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js'
 import adminRoutes from './routes/adminRoutes.js';
+import { verifyEmailService } from './utils/otpMailer.js';
 
 
 dotenv.config();
+
+try {
+    await verifyEmailService();
+} catch (error) {
+    console.error(`[SMTP] ${error.message}`);
+    process.exit(1);
+}
 
 const app = express();
 

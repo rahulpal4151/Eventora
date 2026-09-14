@@ -39,8 +39,15 @@ const registerUser = async (req, res) => {
             role: ['Participant', 'Organizer'].includes(role) ? role : 'Participant'
         })
 
-        // 5. Response bhejne ke liye password hide karna
-        await issueVerificationOtp(user);
+        // 5. Email fail hone par incomplete account ko remove karna
+        try {
+            await issueVerificationOtp(user);
+        } catch (error) {
+            await User.deleteOne({ _id: user._id });
+            throw error;
+        }
+
+        // 6. Response bhejne ke liye password hide karna
         const createdUser = await User.findById(user._id).select("-password");
 
         res.status(201).json({

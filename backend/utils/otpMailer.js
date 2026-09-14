@@ -27,6 +27,31 @@ const createTransporter = () => {
     });
 };
 
+export const verifyEmailService = async () => {
+    const transporter = createTransporter();
+
+    if (!transporter) {
+        const message = 'Email service is not configured';
+        if (process.env.NODE_ENV === 'production') {
+            throw new Error(message);
+        }
+        console.warn(`[SMTP] ${message}`);
+        return false;
+    }
+
+    try {
+        await transporter.verify();
+        console.log('[SMTP] Email service is ready');
+        return true;
+    } catch (error) {
+        if (process.env.NODE_ENV === 'production') {
+            throw new Error(`Email service verification failed: ${error.message}`);
+        }
+        console.warn(`[SMTP] Email service verification failed: ${error.message}`);
+        return false;
+    }
+};
+
 export const sendVerificationOtp = async ({ email, name, otp }) => {
     const transporter = createTransporter();
 
@@ -39,11 +64,21 @@ export const sendVerificationOtp = async ({ email, name, otp }) => {
         throw new Error('Email service is not configured');
     }
 
-    await transporter.sendMail({
-        from: process.env.SMTP_FROM || process.env.SMTP_USER,
-        to: email,
-        subject: 'Verify your Eventora account',
-        text: `Hi ${name}, your Eventora verification code is ${otp}. It expires in ${OTP_EXPIRY_MINUTES} minutes.`,
-        html: `<p>Hi ${name},</p><p>Your Eventora verification code is:</p><h2>${otp}</h2><p>This code expires in ${OTP_EXPIRY_MINUTES} minutes.</p>`
-    });
+    try {
+        await transporter.sendMail({
+            from: process.env.SMTP_FROM || process.env.SMTP_USER,
+            to: email,
+            subject: 'Verify your Eventora account',
+            text: `Hi ${name}, your Eventora verification code is ${otp}. It expires in ${OTP_EXPIRY_MINUTES} minutes.`,
+            html: `<p>Hi ${name},</p><p>Your Eventora verification code is:</p><h2>${otp}</h2><p>This code expires in ${OTP_EXPIRY_MINUTES} minutes.</p>`
+        });
+    } catch (error) {
+        if (process.env.NODE_ENV !== 'production') {
+            console.warn(`[OTP email failed] ${error.message}`);
+            console.warn(`[OTP] ${email}: ${otp}`);
+            return;
+        }
+
+        throw new Error('Unable to send verification email');
+    }
 };
