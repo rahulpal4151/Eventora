@@ -8,7 +8,7 @@
     "build": "npm run build --prefix frontend",
     "lint": "npm run lint --prefix frontend"
   },
-  "devDependencies": {
+  "dependencies": {
     "concurrently": "^9.2.1"
   }
 }
