@@ -1,15 +1,13 @@
-import { CalendarDays, Globe2, Mail, MessageCircle } from 'lucide-react';
+import { Globe2, Mail, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import BrandLogo from './BrandLogo';
 
 const Footer = () => (
     <footer className="mt-auto border-t border-slate-200/80 bg-white/80 dark:border-slate-800 dark:bg-slate-950/80">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.4fr_1fr_1fr] lg:px-8">
             <div>
-                <Link to="/" className="inline-flex items-center gap-2 text-lg font-bold tracking-tight text-slate-900 dark:text-white">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-400 text-slate-950">
-                        <CalendarDays size={19} strokeWidth={2.5} />
-                    </span>
-                    Eventora
+                <Link to="/" className="transition-transform hover:scale-[1.02]" aria-label="Eventora home">
+                    <BrandLogo />
                 </Link>
                 <p className="mt-4 max-w-sm text-sm leading-6 text-slate-600 dark:text-slate-400">
                     Find ambitious people, build bold ideas, and make your next event count.

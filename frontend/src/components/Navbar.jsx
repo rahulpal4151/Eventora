@@ -4,7 +4,8 @@ import { AuthContext } from '../context/authContextValue';
 import { ThemeContext } from '../context/themeContextValue';
 import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
-import { CalendarDays, LogOut, Menu, Moon, Sun, X } from 'lucide-react';
+import { LogOut, Menu, Moon, Sun, X } from 'lucide-react';
+import BrandLogo from './BrandLogo';
 
 const Navbar = () => {
     const { user, setUser } = useContext(AuthContext);
@@ -27,11 +28,8 @@ const Navbar = () => {
     return (
         <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 px-4 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/85 sm:px-6">
             <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between">
-                <Link to="/" onClick={() => setMenuOpen(false)} className="group inline-flex items-center gap-2.5 text-xl font-bold tracking-tight text-slate-950 dark:text-white">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-400 text-slate-950 shadow-[0_8px_20px_rgba(34,211,238,0.25)] transition group-hover:rotate-[-6deg]">
-                        <CalendarDays size={19} strokeWidth={2.5} />
-                    </span>
-                    Eventora
+                <Link to="/" onClick={() => setMenuOpen(false)} className="group transition-transform hover:scale-[1.02]" aria-label="Eventora home">
+                    <BrandLogo />
                 </Link>
 
                 <button type="button" onClick={() => setMenuOpen((open) => !open)} aria-label="Toggle navigation menu" className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 dark:border-slate-700 dark:text-slate-200 md:hidden">

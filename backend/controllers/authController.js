@@ -47,6 +47,7 @@ const registerUser = async (req, res) => {
             throw error;
         }
 
+
         // 6. Response bhejne ke liye password hide karna
         const createdUser = await User.findById(user._id).select("-password");
 
@@ -206,8 +207,6 @@ const resendVerificationOtp = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
-
-
 export {
     registerUser,
     loginUser,
