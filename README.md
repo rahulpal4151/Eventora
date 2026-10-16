@@ -165,8 +165,8 @@ Do not commit `.env` files or put backend secrets in frontend variables. In
 production, configure the backend variables in the hosting provider's
 environment settings. Set `NODE_ENV=production`, use the provider's `PORT`,
 and set `FRONTEND_URL` to the deployed app's HTTPS origin. The monolithic
-production build uses same-origin API requests, so leave `VITE_API_URL`
-unset when building for production.
+production build always uses same-origin API requests. `VITE_API_URL` is only
+used by the development frontend, so it can stay set to localhost locally.
 
 ---
 ## 4. Run the Application

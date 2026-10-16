@@ -12,7 +12,6 @@ import authRoutes from './routes/authRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js'
 import adminRoutes from './routes/adminRoutes.js';
-import { verifyEmailService } from './utils/otpMailer.js';
 
 
 dotenv.config();
@@ -63,9 +62,6 @@ const startServer = async () => {
 
     app.listen(PORT, () => {
         console.log(`Server is running on http://localhost:${PORT}`);
-        void verifyEmailService().catch((error) => {
-            console.error(`[SMTP] Email service check failed; the app is running, but verification emails may fail: ${error.message}`);
-        });
     });
 };
 

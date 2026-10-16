@@ -1,4 +1,5 @@
 import User from '../models/User.models.js';
+import crypto from 'node:crypto';
 import { createOtp, getOtpExpiry, hashOtp, sendVerificationOtp } from '../utils/otpMailer.js';
 
 const issueVerificationOtp = async (user) => {
@@ -7,7 +8,16 @@ const issueVerificationOtp = async (user) => {
     user.emailVerificationOtpExpiresAt = getOtpExpiry();
     user.emailVerificationOtpSentAt = new Date();
     await user.save({ validateBeforeSave: false });
-    await sendVerificationOtp({ email: user.email, name: user.name, otp });
+
+    try {
+        await sendVerificationOtp({ email: user.email, name: user.name, otp });
+    } catch (error) {
+        user.emailVerificationOtpHash = undefined;
+        user.emailVerificationOtpExpiresAt = undefined;
+        user.emailVerificationOtpSentAt = undefined;
+        await user.save({ validateBeforeSave: false });
+        throw error;
+    }
 };
 
 // ==========================================
@@ -36,10 +46,10 @@ const registerUser = async (req, res) => {
             name,
             email,
             password,
+            isEmailVerified: false,
             role: ['Participant', 'Organizer'].includes(role) ? role : 'Participant'
         })
 
-        // 5. Email fail hone par incomplete account ko remove karna
         try {
             await issueVerificationOtp(user);
         } catch (error) {
@@ -47,8 +57,7 @@ const registerUser = async (req, res) => {
             throw error;
         }
 
-
-        // 6. Response bhejne ke liye password hide karna
+        // 5. Response bhejne ke liye password hide karna
         const createdUser = await User.findById(user._id).select("-password");
 
         res.status(201).json({
@@ -93,6 +102,7 @@ const loginUser = async (req, res) => {
                 code: "EMAIL_NOT_VERIFIED"
             });
         }
+
         // 3. Tokens generate karna
         const accessToken = user.generateAccessTokenSecret();
         const refreshToken = user.generateRefreshToken();
@@ -165,7 +175,9 @@ const verifyEmailOtp = async (req, res) => {
             return res.status(400).json({ message: "OTP expired. Please request a new one." });
         }
 
-        if (hashOtp(String(otp)) !== user.emailVerificationOtpHash) {
+        const submittedHash = Buffer.from(hashOtp(String(otp)), 'hex');
+        const storedHash = Buffer.from(user.emailVerificationOtpHash, 'hex');
+        if (submittedHash.length !== storedHash.length || !crypto.timingSafeEqual(submittedHash, storedHash)) {
             return res.status(400).json({ message: "Invalid OTP" });
         }
 
@@ -207,6 +219,7 @@ const resendVerificationOtp = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
 export {
     registerUser,
     loginUser,
