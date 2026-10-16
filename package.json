@@ -2,13 +2,23 @@
   "name": "eventora",
   "private": true,
   "version": "1.0.0",
-  "scripts": {
-    "install:all": "npm install --prefix backend && npm install --prefix frontend",
-    "start": "concurrently -k -n BACKEND,FRONTEND -c blue,green \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
-    "build": "npm run build --prefix frontend",
-    "lint": "npm run lint --prefix frontend"
+  "description": "Root scripts for Eventora client and server",
+  "engines": {
+    "node": ">=20.19.0"
   },
-  "dependencies": {
-    "concurrently": "^9.2.1"
+  "scripts": {
+    "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend",
+    "dev:server": "npm run dev --prefix backend",
+    "dev:client": "npm run dev --prefix frontend",
+    "dev": "concurrently -n server,client -c blue,green \"npm run dev:server\" \"npm run dev:client\"",
+    "start:server": "npm run start --prefix backend",
+    "start": "npm run start:server",
+    "build": "npm run build --prefix frontend",
+    "lint": "npm run lint --prefix frontend",
+    "setup": "npm run install:all",
+    "dev:all": "npm run install:all && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
   }
 }

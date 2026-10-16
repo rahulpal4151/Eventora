@@ -142,47 +142,57 @@ The backend exposes RESTful endpoints for authentication and event management.
 
 ---
 ## 2. Install Dependencies
-Install dependencies for both the frontend and backend:
+Run this once from the repository root to install dependencies for the runner,
+backend, and frontend:
 
-```
-# In the root directory (Backend)
-npm install
-
-# In the frontend directory
-cd frontend
-npm install
+```bash
+npm run install:all
 ```
 
 ---
 ## 3. Environment Variables
-```
-frontend/.env
-VITE_API_URL=http://localhost:5000
-VITE_CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
-VITE_CLOUDINARY_UPLOAD_PRESET=your-cloudinary-upload-preset
+Copy `backend/.env.example` to `backend/.env` and set the MongoDB URI,
+independent random access/refresh token secrets, and working SMTP credentials.
+For local development, copy `frontend/.env.example` to `frontend/.env` and
+provide the Cloudinary values if event image uploads are required.
 
-
-backend/.env
-PORT = 5000
-MONGO_URI=mongodb+srv://<db_user_name>:<password>@cluster0.r8iu7ke.mongodb.net/
-ACCESS_TOKEN_SECRET=generate-your-long-acces-secrete-key
-ACCESS_TOKEN_EXPIRY=1d
-REFRESH_TOKEN_SECRET=generate-your-long-refresh-secrete-key
-REFRESH_TOKEN_EXPIRY=10d
-NODE_ENV=development
-MAIL_USER=Your-Mail
-MAIL_PASS=Your-Mail-Password
-```
+Do not commit `.env` files or put backend secrets in frontend variables. In
+production, configure the backend variables in the hosting provider's
+environment settings. Set `NODE_ENV=production`, use the provider's `PORT`,
+and set `FRONTEND_URL` to the deployed app's HTTPS origin. The monolithic
+production build uses same-origin API requests, so leave `VITE_API_URL`
+unset when building for production.
 
 ---
 ## 4. Run the Application
 
+From the repository root, start the backend and frontend together:
+
+```bash
+npm run dev
+```
+
+This starts the backend and Vite development server concurrently. Use `Ctrl+C`
+to stop both processes.
 
 ---
 # 🚀 Deployment
-- Eventora is deployed as a monolithic application on Render.
-- The Node.js backend (index.js) is configured using express.static() to serve the React frontend's compiled dist folder.
-- A catch-all route (*) ensures that React Router handles all frontend page navigation seamlessly on a single web service.
+Deploy Eventora as one Node.js web service. The backend serves the frontend's
+compiled `frontend/dist` files and forwards non-API page routes to the React
+app. The API health check is available at `/api/health`.
+
+Use these commands in the hosting provider:
+
+```text
+Build command: npm run install:all && npm run build
+Start command: npm start
+```
+
+Configure `MONGO_URI`, `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`, the SMTP
+variables, and `FRONTEND_URL` in the service environment. Also configure
+`VITE_CLOUDINARY_CLOUD_NAME` and `VITE_CLOUDINARY_UPLOAD_PRESET` as build-time
+variables if event image uploads are used. Do not set `VITE_API_URL` for this
+same-origin deployment. Use Node.js 20.19 or newer.
 
 ---
 # 🧠 What I Learned

@@ -3,6 +3,9 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from "./config/db.js";
 import cookieParser from 'cookie-parser';
+import { existsSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 // Files import karna
 import authRoutes from './routes/authRoutes.js';
@@ -29,14 +32,29 @@ app.use('/api/v1/events', eventRoutes);
 app.use('/api/v1/bookings', bookingRoutes);
 app.use('/api/v1/admin', adminRoutes);
 
-
-
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok' });
+});
 
 const PORT = process.env.PORT || 8000;
 
-app.get('/', (req, res) => {
-    res.send(`<h2>Backend is running</h2>`);
-})
+const frontendDistPath = resolve(dirname(fileURLToPath(import.meta.url)), '../frontend/dist');
+const frontendIndexPath = resolve(frontendDistPath, 'index.html');
+
+app.use('/api', (req, res) => {
+    res.status(404).json({ message: 'API route not found' });
+});
+
+if (existsSync(frontendIndexPath)) {
+    app.use(express.static(frontendDistPath));
+    app.use((req, res, next) => {
+        if (req.method !== 'GET' || req.path.startsWith('/api/')) {
+            return next();
+        }
+
+        res.sendFile(frontendIndexPath);
+    });
+}
 
 
 
