@@ -82,43 +82,45 @@ const CreateEvent = () => {
     };
 
     return (
-        <div className="max-w-2xl mx-auto px-4 py-10">
-            <div className="bg-white p-8 rounded-xl shadow-md border border-gray-100">
-                <h1 className="text-3xl font-bold text-gray-900 mb-6">Create New Event</h1>
+        <main className="page-container max-w-4xl">
+            <div className="surface-panel p-6 sm:p-9 lg:p-10">
+                <p className="eyebrow">Give your idea a stage</p>
+                <h1 className="page-title mt-3">Create an event</h1>
+                <p className="mb-8 mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Share the details and send your event for review.</p>
     
                 <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Event Title</label>
-                        <input type="text" name="title" required onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Global Tech Hackathon" />
+                        <label htmlFor="event-title" className="field-label">Event title</label>
+                        <input id="event-title" type="text" name="title" required onChange={handleChange} className="input-control" placeholder="e.g. Global Tech Hackathon" />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                        <textarea name="description" required rows="4" onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Tell us about the event..."></textarea>
+                        <label htmlFor="event-description" className="field-label">Description</label>
+                        <textarea id="event-description" name="description" required rows="5" onChange={handleChange} className="input-control resize-y" placeholder="Tell people what makes your event worth attending..." />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                            <input type="date" name="date" required onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                            <label htmlFor="event-date" className="field-label">Date</label>
+                            <input id="event-date" type="date" name="date" required onChange={handleChange} className="input-control" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                            <input type="text" name="location" required onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. New Delhi, India" />
+                            <label htmlFor="event-location" className="field-label">Location</label>
+                            <input id="event-location" type="text" name="location" required onChange={handleChange} className="input-control" placeholder="e.g. New Delhi, India" />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Banner Image (Optional)</label>
-                        <input type="file" accept="image/*" onChange={handleFileChange} className="min-w-0 w-full rounded-lg border border-gray-300 p-2 text-sm focus:outline-none file:mr-2 file:rounded-full file:border-0 file:bg-blue-50 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-blue-700 hover:file:bg-blue-100 sm:file:mr-4 sm:file:px-4 sm:file:text-sm" />
+                        <label htmlFor="event-banner" className="field-label">Banner image <span className="font-normal text-slate-400">(optional)</span></label>
+                        <input id="event-banner" type="file" accept="image/*" onChange={handleFileChange} className="input-control file:mr-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:px-4 file:py-2 file:text-xs file:font-bold file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-indigo-400/10 dark:file:text-indigo-300" />
                     </div>
 
-                    <button type="submit" disabled={loading} className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition disabled:opacity-70 mt-4">
-                        {loading ? 'Processing...' : 'Submit Event for Approval'}
+                    <button type="submit" disabled={loading} className="button-primary mt-4 w-full">
+                        {loading ? 'Preparing your event...' : 'Submit event for approval'}
                     </button>
                 </form>
             </div>
-        </div>
+        </main>
     );
 };
 

@@ -15,34 +15,35 @@ const Navbar = () => {
 
     const handleLogout = async () => {
         try {
-            await axiosInstance.post('/auth/logout'); 
-            setUser(null); 
+            await axiosInstance.post('/auth/logout');
             toast.success("Logged out successfully");
-            setMenuOpen(false);
-            navigate('/login');
         } catch {
-            toast.error("Logout failed");
+            toast.error("Signed out on this device, but the server could not be reached.");
+        } finally {
+            setUser(null);
+            setMenuOpen(false);
+            navigate('/login', { replace: true });
         }
     };
 
     return (
-        <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 px-4 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/85 sm:px-6">
+        <nav className="sticky top-0 z-50 border-b border-white/70 bg-white/75 px-4 shadow-[0_4px_24px_rgba(15,23,42,0.035)] backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/75 sm:px-6">
             <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between">
                 <Link to="/" onClick={() => setMenuOpen(false)} className="group transition-transform hover:scale-[1.02]" aria-label="Eventora home">
                     <BrandLogo />
                 </Link>
 
-                <button type="button" onClick={() => setMenuOpen((open) => !open)} aria-label="Toggle navigation menu" className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 dark:border-slate-700 dark:text-slate-200 md:hidden">
+                <button type="button" onClick={() => setMenuOpen((open) => !open)} aria-label="Toggle navigation menu" className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white/70 text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 md:hidden">
                     {menuOpen ? <X size={20} /> : <Menu size={20} />}
                 </button>
 
                 <div className={`${menuOpen ? 'flex' : 'hidden'} absolute left-4 right-4 top-[4.5rem] flex-col gap-2 rounded-2xl border border-slate-200 bg-white p-3 shadow-xl dark:border-slate-800 dark:bg-slate-900 md:static md:flex md:flex-row md:items-center md:gap-2 md:border-0 md:bg-transparent md:p-0 md:shadow-none md:dark:bg-transparent`}>
-                    <Link to="/" onClick={() => setMenuOpen(false)} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">Home</Link>
+                    <Link to="/" onClick={() => setMenuOpen(false)} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-indigo-50 hover:text-indigo-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">Home</Link>
 
                     {!user ? (
                         <>
-                            <Link to="/login" onClick={() => setMenuOpen(false)} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">Login</Link>
-                            <Link to="/signup" onClick={() => setMenuOpen(false)} className="rounded-lg bg-slate-950 px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-cyan-500 hover:text-slate-950 dark:bg-cyan-400 dark:text-slate-950 dark:hover:bg-cyan-300">Create account</Link>
+                            <Link to="/login" onClick={() => setMenuOpen(false)} className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-indigo-50 hover:text-indigo-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">Login</Link>
+                            <Link to="/signup" onClick={() => setMenuOpen(false)} className="rounded-lg bg-slate-950 px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-indigo-600 dark:bg-indigo-400 dark:text-slate-950 dark:hover:bg-indigo-300">Create account</Link>
                         </>
                     ) : (
                         <>
@@ -54,7 +55,7 @@ const Navbar = () => {
                             <button type="button" onClick={handleLogout} className="inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-rose-600 transition hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40"><LogOut size={16} /> Logout</button>
                         </>
                     )}
-                    <button type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`} className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 px-3 text-sm font-medium text-slate-700 transition hover:border-cyan-400 hover:text-cyan-600 dark:border-slate-700 dark:text-slate-200 dark:hover:text-cyan-300 md:ml-2">
+                    <button type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`} className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white/70 px-3 text-sm font-medium text-slate-700 transition hover:border-indigo-300 hover:text-indigo-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:text-indigo-300 md:ml-2">
                         {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
                         <span className="md:hidden">{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
                     </button>

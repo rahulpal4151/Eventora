@@ -156,6 +156,11 @@ independent random access/refresh token secrets, and working SMTP credentials.
 For local development, copy `frontend/.env.example` to `frontend/.env` and
 provide the Cloudinary values if event image uploads are required.
 
+If local startup reports `querySrv ECONNREFUSED` for MongoDB Atlas, and your
+network permits public DNS, add
+`MONGODB_DNS_SERVERS=8.8.8.8,8.8.4.4` to `backend/.env`. Leave this optional
+setting unset on Render so the host's DNS resolver is used.
+
 Do not commit `.env` files or put backend secrets in frontend variables. In
 production, configure the backend variables in the hosting provider's
 environment settings. Set `NODE_ENV=production`, use the provider's `PORT`,
@@ -188,11 +193,12 @@ Build command: npm run install:all && npm run build
 Start command: npm start
 ```
 
-Configure `MONGO_URI`, `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`, the SMTP
-variables, and `FRONTEND_URL` in the service environment. Also configure
+Configure `MONGO_URI`, `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`,
+`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, and `FRONTEND_URL` in
+the service environment. Also configure
 `VITE_CLOUDINARY_CLOUD_NAME` and `VITE_CLOUDINARY_UPLOAD_PRESET` as build-time
 variables if event image uploads are used. Do not set `VITE_API_URL` for this
-same-origin deployment. Use Node.js 20.19 or newer.
+same-origin deployment. Use Node.js 20.19+ or 22.12+.
 
 ---
 # 🧠 What I Learned

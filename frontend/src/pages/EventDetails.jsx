@@ -62,60 +62,65 @@ const EventDetails = () => {
         }
     };
 
-    if (loading) return <div className="text-center text-xl mt-20">Loading event details...</div>;
+    if (loading) return <div className="page-container"><div className="surface-panel h-96 animate-pulse" /></div>;
     if (error) {
         return (
-            <div className="text-center mt-20">
-                <p className="text-xl text-red-500 mb-4">{error}</p>
-                <button type="button" onClick={fetchEventDetails} className="bg-gray-900 text-white px-5 py-2 rounded-lg hover:bg-gray-800">
+            <div className="page-container text-center">
+                <div className="empty-state">
+                <p className="mb-4 text-lg text-rose-500">{error}</p>
+                <button type="button" onClick={fetchEventDetails} className="button-primary">
                     Try again
                 </button>
+                </div>
             </div>
         );
     }
-    if (!event) return <div className="text-center text-xl mt-20 text-red-500">Event not found!</div>;
+    if (!event) return <div className="page-container text-center text-xl text-rose-500">Event not found!</div>;
 
     return (
-        <div className="max-w-3xl mx-auto px-4 py-6">
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+        <main className="page-container max-w-5xl">
+            <div className="surface-panel overflow-hidden">
                 {event.bannerImage ? (
-                    <img src={event.bannerImage} alt={event.title} className="w-full h-40 md:h-56 object-cover bg-gray-100" />
+                    <img src={event.bannerImage} alt={event.title} className="h-64 w-full bg-slate-100 object-cover sm:h-80 lg:h-[26rem]" />
                 ) : (
-                    <div className="w-full h-40 md:h-56 bg-gray-100 flex items-center justify-center text-gray-500">No banner image</div>
+                    <div className="event-image-placeholder flex h-64 items-end p-8 text-lg font-semibold text-white sm:h-80 lg:h-[26rem]">An Eventora experience</div>
                 )}
 
-                <div className="p-6">
-                    <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                        <h1 className="min-w-0 break-words text-2xl font-extrabold text-gray-900 md:text-3xl">{event.title}</h1>
-                        <span className={`px-3 py-1 text-xs font-semibold rounded-full ${event.status === 'Approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                <div className="p-6 sm:p-9 lg:p-12">
+                    <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                            <p className="eyebrow">Featured experience</p>
+                            <h1 className="mt-3 min-w-0 break-words text-3xl font-bold tracking-tight text-slate-950 dark:text-white md:text-5xl">{event.title}</h1>
+                        </div>
+                        <span className={`w-fit rounded-full px-3 py-1.5 text-xs font-bold ${event.status === 'Approved' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-400/10 dark:text-amber-300'}`}>
                             {event.status || 'Pending'}
                         </span>
                     </div>
 
-                    <div className="mb-6 flex flex-wrap gap-x-4 gap-y-3 border-b pb-4 text-gray-600">
-                        <div className="flex min-w-0 items-start gap-2">
+                    <div className="mb-8 flex flex-wrap gap-3 border-b border-slate-200 pb-6 text-slate-600 dark:border-slate-800 dark:text-slate-300">
+                        <div className="flex min-w-0 items-center gap-2 rounded-xl bg-slate-50 px-4 py-3 dark:bg-slate-800/70">
                             <span className="text-lg">📅</span>
                             <span className="font-medium text-sm">{new Date(event.date).toDateString()}</span>
                         </div>
-                        <div className="flex min-w-0 items-start gap-2">
+                        <div className="flex min-w-0 items-center gap-2 rounded-xl bg-slate-50 px-4 py-3 dark:bg-slate-800/70">
                             <span className="text-lg">📍</span>
                             <span className="break-words text-sm font-medium">{event.location}</span>
                         </div>
                     </div>
 
-                    <div className="mb-6">
-                        <h2 className="text-xl font-bold text-gray-900 mb-2">About the Event</h2>
-                        <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{event.description}</p>
+                    <div className="mb-8">
+                        <h2 className="mb-3 text-xl font-bold text-slate-950 dark:text-white">About the event</h2>
+                        <p className="whitespace-pre-wrap text-base leading-8 text-slate-600 dark:text-slate-300">{event.description}</p>
                     </div>
 
-                    <div className="bg-gray-50 p-4 rounded-lg text-center">
+                    <div className="rounded-2xl border border-indigo-100 bg-indigo-50/70 p-5 text-center dark:border-indigo-400/15 dark:bg-indigo-400/5">
                         {user?.role === 'Organizer' || user?.role === 'SuperAdmin' ? (
-                            <p className="text-sm text-gray-600">You are logged in as {user.role}. Only Participants can apply.</p>
+                            <p className="text-sm text-slate-600 dark:text-slate-300">You are logged in as {user.role}. Only Participants can apply.</p>
                         ) : (
                             <button 
                                 onClick={handleApply}
                                 disabled={applying || event.status !== 'Approved'}
-                                className="w-full px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="button-primary w-full"
                             >
                                 {applying ? 'Applying...' : event.status !== 'Approved' ? 'Event not active' : 'Apply Now'}
                             </button>
@@ -123,7 +128,7 @@ const EventDetails = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     );
 };
 

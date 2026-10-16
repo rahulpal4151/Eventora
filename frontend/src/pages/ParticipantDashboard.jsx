@@ -30,53 +30,55 @@ const ParticipantDashboard = () => {
     }, []);
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">My Bookings</h1>
-                <p className="text-gray-600 mt-1">Hello {user?.name}, here are the events you applied for.</p>
+        <main className="page-container">
+            <div className="mb-9">
+                <p className="eyebrow">Your event journey</p>
+                <h1 className="page-title mt-3">My bookings</h1>
+                <p className="mt-2 text-slate-600 dark:text-slate-400">Hello {user?.name}, here are the events you applied for.</p>
             </div>
 
             {loading ? (
-                <div className="text-center text-gray-500 mt-10">Loading your bookings...</div>
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{[0, 1, 2].map((item) => <div key={item} className="surface-panel h-64 animate-pulse" />)}</div>
             ) : error ? (
-                <div className="bg-red-50 p-8 rounded-xl border border-red-100 text-center">
-                    <p className="text-red-700 mb-4">{error}</p>
-                    <button type="button" onClick={fetchBookings} className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800">
+                <div className="empty-state">
+                    <p className="mb-4 text-rose-600 dark:text-rose-300">{error}</p>
+                    <button type="button" onClick={fetchBookings} className="button-primary">
                         Try again
                     </button>
                 </div>
             ) : bookings.length === 0 ? (
-                <div className="bg-white p-10 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <p className="text-gray-500 mb-4">You haven't applied for any events yet.</p>
+                <div className="empty-state">
+                    <p className="text-lg font-semibold text-slate-800 dark:text-white">Your next experience is out there.</p>
+                    <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">You haven&apos;t applied for any events yet.</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {bookings.map((booking) => (
-                        <div key={booking._id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <article key={booking._id} className="surface-panel overflow-hidden p-5 transition hover:-translate-y-1">
                             {booking.eventId?.bannerImage && (
-                                <img src={booking.eventId.bannerImage} alt={booking.eventId.title} className="w-full h-36 object-cover rounded-lg mb-4" />
+                                <img src={booking.eventId.bannerImage} alt={booking.eventId.title} className="mb-5 h-40 w-full rounded-2xl object-cover" />
                             )}
-                            <h3 className="text-lg font-bold text-gray-900 mb-2">{booking.eventId?.title || 'Unknown Event'}</h3>
-                            <p className="text-sm text-gray-500">{booking.eventId?.location || 'Location pending'}</p>
-                            <p className="text-sm text-gray-500 mb-4">
+                            <h3 className="mb-2 text-lg font-bold text-slate-900 dark:text-white">{booking.eventId?.title || 'Unknown Event'}</h3>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">{booking.eventId?.location || 'Location pending'}</p>
+                            <p className="mb-5 mt-2 text-sm text-slate-500 dark:text-slate-400">
                                 {booking.eventId?.date ? new Date(booking.eventId.date).toLocaleDateString() : 'Date pending'}
                                 {' · '}Applied {new Date(booking.createdAt).toLocaleDateString()}
                             </p>
                             <div className="flex flex-wrap items-center justify-between gap-2">
-                                <span className={`px-3 py-1 text-sm font-semibold rounded-full ${booking.status === 'Approved' ? 'bg-green-100 text-green-800' : booking.status === 'Rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                                <span className={`rounded-full px-3 py-1.5 text-xs font-bold ${booking.status === 'Approved' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-300' : booking.status === 'Rejected' ? 'bg-rose-100 text-rose-800 dark:bg-rose-400/10 dark:text-rose-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-400/10 dark:text-amber-300'}`}>
                                     {booking.status}
                                 </span>
                                 {booking.eventId?._id && (
-                                    <a href={`/event/${booking.eventId._id}`} className="text-blue-600 text-sm font-semibold hover:underline">
+                                    <a href={`/event/${booking.eventId._id}`} className="text-sm font-bold text-indigo-600 hover:underline dark:text-indigo-300">
                                         View event
                                     </a>
                                 )}
                             </div>
-                        </div>
+                        </article>
                     ))}
                 </div>
             )}
-        </div>
+        </main>
     );
 };
 

@@ -33,38 +33,53 @@ const Signup = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-[80vh]">
-            <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md border border-gray-100">
-                <h2 className="text-3xl font-extrabold mb-6 text-center text-gray-900">Create Account</h2>
-                <form onSubmit={handleSubmit} className="space-y-5">
+        <main className="auth-layout">
+            <aside className="auth-aside">
+                <div>
+                    <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-xl font-black">E</span>
+                    <p className="mt-12 text-xs font-bold uppercase tracking-[0.22em] text-cyan-200">Make room for what’s next</p>
+                    <h1 className="mt-4 max-w-md text-5xl font-bold leading-tight tracking-[-0.05em]">Big ideas begin with showing up.</h1>
+                    <p className="mt-5 max-w-md leading-7 text-indigo-100/75">Join a growing community of curious people, creative organizers, and future collaborators.</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4"><p className="text-2xl font-bold">Discover</p><p className="mt-1 text-xs text-indigo-100/70">Find your next event</p></div>
+                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4"><p className="text-2xl font-bold">Connect</p><p className="mt-1 text-xs text-indigo-100/70">Meet your people</p></div>
+                </div>
+                <span className="pointer-events-none absolute -bottom-20 -right-12 h-72 w-72 rounded-full border border-white/10" aria-hidden="true" />
+            </aside>
+            <section className="auth-card">
+                <p className="eyebrow">Start something meaningful</p>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-white">Create your account</h2>
+                <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">A few details and you’re in.</p>
+                <form onSubmit={handleSubmit} className="mt-8 space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                        <input type="text" name="name" required onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="John Doe" />
+                        <label htmlFor="signup-name" className="field-label">Full name</label>
+                        <input id="signup-name" type="text" name="name" required autoComplete="name" onChange={handleChange} className="input-control" placeholder="Your name" />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                        <input type="email" name="email" required onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="you@example.com" />
+                        <label htmlFor="signup-email" className="field-label">Email address</label>
+                        <input id="signup-email" type="email" name="email" required autoComplete="email" onChange={handleChange} className="input-control" placeholder="you@example.com" />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                        <input type="password" name="password" required onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="••••••••" />
+                        <label htmlFor="signup-password" className="field-label">Password</label>
+                        <input id="signup-password" type="password" name="password" required autoComplete="new-password" onChange={handleChange} className="input-control" placeholder="Create a password" />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Join As</label>
-                        <select name="role" onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                        <label htmlFor="signup-role" className="field-label">I want to</label>
+                        <select id="signup-role" name="role" onChange={handleChange} className="input-control">
                             <option value="Participant">Participant (Attend Events)</option>
                             <option value="Organizer">Organizer (Host Events)</option>
                         </select>
                     </div>
-                    <button type="submit" disabled={loading} className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition disabled:opacity-70">
-                        {loading ? 'Creating Account...' : 'Sign Up'}
+                    <button type="submit" disabled={loading} className="button-primary w-full">
+                        {loading ? 'Creating your account...' : 'Create account'}
                     </button>
                 </form>
-                <p className="mt-6 text-center text-sm text-gray-600">
-                    Already have an account? <Link to="/login" className="text-blue-600 font-semibold hover:underline">Log in</Link>
+                <p className="mt-7 text-center text-sm text-slate-500 dark:text-slate-400">
+                    Already a member? <Link to="/login" className="font-bold text-indigo-600 hover:text-indigo-500 dark:text-indigo-300">Sign in</Link>
                 </p>
-            </div>
-        </div>
+            </section>
+        </main>
     );
 };
 

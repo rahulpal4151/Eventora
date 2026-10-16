@@ -51,41 +51,43 @@ const OrganizerDashboard = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <main className="page-container">
             <div className="mb-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900">Organizer Dashboard</h1>
-                    <p className="text-gray-600 mt-1">Welcome back, {user?.name}</p>
+                    <p className="eyebrow">Your creative hub</p>
+                    <h1 className="page-title mt-3">Organizer dashboard</h1>
+                    <p className="mt-2 text-slate-600 dark:text-slate-400">Welcome back, {user?.name}</p>
                 </div>
-                <Link to="/organizer/create-event" className="w-full rounded-lg bg-blue-600 px-5 py-2 text-center font-medium text-white transition hover:bg-blue-700 sm:w-auto">
-                    + Create New Event
+                <Link to="/organizer/create-event" className="button-primary w-full sm:w-auto">
+                    + Create new event
                 </Link>
             </div>
 
             {loading ? (
-                <div className="text-center text-gray-500 mt-10">Loading your events...</div>
+                <div className="surface-panel h-64 animate-pulse" />
             ) : error ? (
-                <div className="bg-red-50 p-8 rounded-xl border border-red-100 text-center">
-                    <p className="text-red-700 mb-4">{error}</p>
-                    <button type="button" onClick={fetchDashboardData} className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800">
+                <div className="empty-state">
+                    <p className="mb-4 text-rose-600 dark:text-rose-300">{error}</p>
+                    <button type="button" onClick={fetchDashboardData} className="button-primary">
                         Try again
                     </button>
                 </div>
             ) : events.length === 0 ? (
-                <div className="bg-white p-10 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <p className="text-gray-500 mb-4">You haven't created any events yet.</p>
+                <div className="empty-state">
+                    <p className="font-semibold text-slate-800 dark:text-slate-200">Your first event starts with an idea.</p>
+                    <Link to="/organizer/create-event" className="button-primary mt-5">Create your first event</Link>
                 </div>
             ) : (
-                <div className="overflow-x-auto rounded-xl border border-gray-100 bg-white shadow-sm">
-                    <table className="min-w-[40rem] divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
+                <div className="surface-panel overflow-x-auto">
+                    <table className="dashboard-table min-w-[40rem] divide-y divide-gray-200">
+                        <thead>
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event Name</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="divide-y divide-gray-200">
                             {events.map((event) => (
                                 <tr key={event._id}>
                                     <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{event.title}</td>
@@ -102,24 +104,25 @@ const OrganizerDashboard = () => {
                 </div>
             )}
 
-            <section className="mt-10">
+            <section className="mt-12">
                 <div className="mb-4 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-900">Participant Applications</h2>
-                        <p className="text-gray-600 mt-1">Review and respond to applications for your events.</p>
+                        <p className="eyebrow">Community</p>
+                        <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-950 dark:text-white">Participant applications</h2>
+                        <p className="mt-1 text-slate-600 dark:text-slate-400">Review and respond to applications for your events.</p>
                     </div>
-                    <span className="text-sm font-medium text-gray-500">{applications.length} total</span>
+                    <span className="rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 text-sm font-semibold text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">{applications.length} total</span>
                 </div>
 
                 {applications.length === 0 ? (
-                    <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 text-center text-gray-500">
+                    <div className="empty-state text-sm text-slate-500 dark:text-slate-400">
                         No participant applications yet.
                     </div>
                 ) : (
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div className="surface-panel overflow-hidden">
                         <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
+                            <table className="dashboard-table min-w-full divide-y divide-gray-200">
+                                <thead>
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Participant</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event</th>
@@ -128,7 +131,7 @@ const OrganizerDashboard = () => {
                                         <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
+                                <tbody className="divide-y divide-gray-200">
                                     {applications.map((application) => (
                                         <tr key={application._id}>
                                             <td className="px-6 py-4 whitespace-nowrap">
@@ -174,7 +177,7 @@ const OrganizerDashboard = () => {
                     </div>
                 )}
             </section>
-        </div>
+        </main>
     );
 };
 

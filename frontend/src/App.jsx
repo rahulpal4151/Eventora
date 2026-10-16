@@ -15,7 +15,7 @@ import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
+    <div className="app-shell flex min-h-screen flex-col text-slate-900 transition-colors dark:text-slate-100">
       <Toaster position="top-center" />
 
       {/* Navbar yahan aayega */}
