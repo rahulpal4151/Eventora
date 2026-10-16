@@ -60,10 +60,12 @@ if (existsSync(frontendIndexPath)) {
 
 const startServer = async () => {
     await connectDB();
-    await verifyEmailService();
 
     app.listen(PORT, () => {
         console.log(`Server is running on http://localhost:${PORT}`);
+        void verifyEmailService().catch((error) => {
+            console.error(`[SMTP] Email service check failed; the app is running, but verification emails may fail: ${error.message}`);
+        });
     });
 };
 
